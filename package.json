@@ -1,0 +1,41 @@
+{
+    "name": "bb-reviews-starter",
+    "description": "Bulletin Board Reviews Starter Project",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jungsap/bb-reviews-starter"
+    },
+    "license": "SEE LICENSE IN LICENSE",
+    "version": "1.0.0",
+    "engines": {
+        "node": "^10.15"
+    },
+    "dependencies": {
+        "@sap/cds": "^3.16",
+        "express": "^4.17.1",
+        "hdb": "^0.17.1"
+    },
+    "scripts": {
+        "build": "cds build/all --clean",
+        "deploy": "cds deploy",
+        "start": "cds run"
+    },
+    "files": [
+        "srv",
+        "db"
+    ],
+    "cds": {
+        "odata": {
+            "version": "v4"
+        },
+        "requires": {
+            "db": {
+                "kind": "hana",
+                "model": [
+                    "srv",
+                    "db"
+                ]
+            }
+        }
+    }
+}

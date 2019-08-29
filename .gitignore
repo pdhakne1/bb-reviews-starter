@@ -59,3 +59,19 @@ typings/
 
 # next.js build output
 .next
+
+# Visual Studio Code
+.vscode
+
+gen/
+.gen/
+target/
+*.db
+.DS_Store
+_out
+.che/
+.cds_gen.log
+package-lock.json
+*.orig
+mta_archives/
+default-*.json

@@ -1,0 +1,29 @@
+{
+    "name": "bb-reviews-starter-srv",
+    "description": "Bulletin Board Reviews Starter Project",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jungsap/bb-reviews-starter"
+    },
+    "license": "SEE LICENSE IN LICENSE",
+    "version": "1.0.0",
+    "engines": {
+        "node": "^10.15"
+    },
+    "dependencies": {
+        "@sap/xssec": "^2.2",
+        "@sap/xsenv": "^2.0",
+        "@sap/hdbext": "~6.0",
+        "@sap/textbundle": "^3.0.0",
+        "@sap/cds": "^3.16",
+        "hdb": "^0.17.0",
+        "express": "^4.17.1"
+    },
+    "devDependencies": {
+        "eslint": "^6.2.2"
+    },
+    "scripts": {
+        "start": "node index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    }
+}

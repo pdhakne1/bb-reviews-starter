@@ -1,0 +1,38 @@
+_schema-version: 2.0.0
+ID: bb-reviews-starter
+version: 1.0.0
+modules:
+  - name: bb-reviews-starter-srv
+    type: nodejs
+    path: srv
+    parameters:
+      memory: 512M
+      disk-quota: 256M
+    provides:
+      - name: srv_api
+        properties:
+          url: ${default-url}
+    requires:
+      - name: bb-reviews-starter-db-hdi-container
+      - name: bb-reviews-starter-uaa
+  - name: bb-reviews-starter-db
+    type: hdb
+    path: db
+    parameters:
+      memory: 256M
+      disk-quota: 256M
+    requires:
+      - name: bb-reviews-starter-db-hdi-container
+resources:
+  - name: bb-reviews-starter-uaa
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service-plan: default
+      service: xsuaa
+      config:
+        xsappname: bb-reviews-starter-${space}
+        tenant-mode: dedicated
+  - name: bb-reviews-starter-db-hdi-container
+    type: com.sap.xs.hdi-container
+    properties:
+      hdi-container-name: ${service-name}

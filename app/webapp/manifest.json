@@ -1,0 +1,108 @@
+{
+    "_version": "1.4.0",
+    "sap.app": {
+        "id": "sap.demo.bulletinboard",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "title": "Bulletin Board Reviews",
+        "description": "Bulletin Board application for learning purpose",
+        "applicationVersion": {
+            "version": "1.0"
+        },
+        "dataSources": {
+            "mainService": {
+                "uri": "api/v1",
+                "type": "JSON",
+				"settings": {
+					"localUri": "test/service"
+				}
+            }
+        }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "sap-icon://detail-view",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        },
+        "supportedThemes": [
+            "sap_hcb",
+            "sap_bluecrystal"
+        ]
+    },
+    "sap.ui5": {
+        "rootView": {
+            "viewName": "sap.demo.bulletinboard.view.App",
+            "type": "XML",
+            "id": "app"
+        },
+        "dependencies": {
+            "minUI5Version": "1.38.0",
+            "libs": {
+                "sap.ui.core": {
+                    "minVersion": "1.38.0"
+                },
+                "sap.m": {
+                    "minVersion": "1.38.0"
+                }
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {},
+        "routing": {
+            "config": {
+                "routerClass": "sap.m.routing.Router",
+                "viewType": "XML",
+                "viewPath": "sap.demo.bulletinboard.view",
+                "controlId": "app",
+                "controlAggregation": "pages",
+                "bypassed": {
+                    "target": ["notFound"]
+                },
+                "async": true
+            },
+
+            "routes": [
+                {
+                    "pattern": "reviews/{reviewee_email}",
+                    "name": "main",
+                    "target": ["main"]
+                },
+                {
+                    "pattern": "NewReview/{reviewee_email}",
+                    "name": "createReview",
+                    "target": ["createReview"]
+                }
+            ],
+
+            "targets": {
+                "main": {
+                    "viewName": "Reviews",
+                    "viewId": "reviews",
+                    "viewLevel": 1
+                },
+                "createReview": {
+                    "viewName": "CreateReview",
+                    "viewId": "createReview",
+                    "viewLevel": 2
+                },
+                "notFound": {
+                    "viewName": "NotFound",
+                    "viewId": "notFound"
+                }
+            }
+        }
+    }
+}
