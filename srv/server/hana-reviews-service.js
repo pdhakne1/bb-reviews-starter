@@ -70,7 +70,7 @@ function hanaReviewsService() {
     this._create = async function (review, req) {
         let db = new dbClass(req.db);
         const statement = await db.preparePromisified(`INSERT INTO BB_REVIEWS (REVIEWEE_EMAIL, REVIEWER_EMAIL, RATING, COMMENT) values(?, ?, ?, ?)`);
-        var result = await db.statementExecPromisified(statement, [review.reviewee_email, review.reviewer_email, review.rating, review.comment]);
+        await db.statementExecPromisified(statement, [review.reviewee_email, review.reviewer_email, review.rating, review.comment]);
         return
     }
 
