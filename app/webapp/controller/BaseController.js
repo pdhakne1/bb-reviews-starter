@@ -34,7 +34,7 @@ sap.ui.define([
 			setModel : function (oModel, sName) {
 				return this.getView().setModel(oModel, sName);
 			},
-			
+
 			/**
 			 * Convenience method for getting the resource bundle.
 			 * @public
