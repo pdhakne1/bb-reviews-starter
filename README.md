@@ -1,7 +1,6 @@
 # bb-reviews-starter
 Bulletin Board Reviews Starter Project
 
-testmmm
 ## Support
 This project is provided "as-is": there is no guarantee that raised issues will be answered or addressed in future releases.
 
