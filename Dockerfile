@@ -1,20 +1,23 @@
 FROM node:10.16.3-slim
 
-# Create app directory
+
 WORKDIR /usr/src/app
-
-# Install app dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
-
-RUN npm config set @sap:registry https://npm.sap.com
-RUN npm install
-# If you are building your code for production
-# RUN npm ci --only=production
-
-# Bundle app source
 COPY . .
 
+# --- Apply default-env.json from mount point to root, /db and /srv folders
+CMD cp /data/default-env.json /usr/src/app/default-env.json
+CMD cp /data/default-env.json /usr/src/app/db/default-env.json
+CMD cp /data/default-env.json /usr/src/app/srv/default-env.json
+
+# --- Sync db changes
+WORKDIR /usr/src/app/db
+RUN npm config set @sap:registry https://npm.sap.com
+RUN npm install
+CMD npm start
+
+# --- Run app server
+WORKDIR /usr/src/app
+
+
 EXPOSE 4004
-CMD [ "npm", "start" ]
+CMD npm start
