@@ -71,7 +71,6 @@ target/
 _out
 .che/
 .cds_gen.log
-package-lock.json
 *.orig
 mta_archives/
 default-*.json

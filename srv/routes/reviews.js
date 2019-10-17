@@ -28,7 +28,7 @@ module.exports = function(app) {
 			return res.status(HTTP_CONFLICT).end()
 		}
 		const reviewee_email = req.body.reviewee_email
-		await app.reviewsService.getAverageRating(reviewee_email)		
+		await app.reviewsService.getAverageRating(reviewee_email, req)		
 		res.status(HTTP_CREATED).location(req.body.component_name).end()
 	})
 
