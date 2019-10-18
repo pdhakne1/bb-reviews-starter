@@ -1,9 +1,28 @@
 /*eslint no-console: 0, no-unused-vars: 0, no-shadow: 0, new-cap: 0, dot-notation:0, no-use-before-define:0 */
 /*eslint-env node, es6 */
 "use strict";
-
 const cache = new Map();
+let actionQueue = []; // cache the actions if db is offline.
+let actionId = 0;
 
+const interval = setInterval(() => {
+	try {
+		if (actionQueue.length > 0) {
+			const ids = actionQueue.map((action) => action.id);
+			Promise.all(actionQueue.map((action, i) => {
+				let review = action.review;
+				let cachedStatement = action.statement;
+				let db = action.db;
+				return db.preparePromisified(cachedStatement).then((statement) => {
+					return db.statementExecPromisified(statement, [review.reviewee_email, review.reviewer_email, review.rating, review.comment]);
+				});
+			})).then(() => {
+				actionQueue = actionQueue.filter((action) => !ids.includes(action.id));
+			});
+		}
+		console.log("QUEUE " + JSON.stringify(error));
+	 }
+}, 5000);
 module.exports = class {
 
 	static createConnectionFromEnv(envFile) {
@@ -84,9 +103,14 @@ module.exports = class {
 		this.client.promisePrepare = this.util.promisify(this.client.prepare);
 	}
 
+
 	preparePromisified(query) {
 		this.currentQuery = query;
 		return this.client.promisePrepare(query);
+	}
+
+	insertReviewToQueue(review, statement, db) {
+		return actionQueue.push({id: actionId++, review: review, statement: statement, db: db});
 	}
 
 	statementExecPromisified(statement, parameters) {

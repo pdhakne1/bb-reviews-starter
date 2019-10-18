@@ -28,10 +28,16 @@ function hanaReviewsService() {
 
     this.create = async function (review, req) {
         let db = new dbClass(req.db);
-        const statement = await db.preparePromisified(`INSERT INTO BB_REVIEWS (REVIEWEE_EMAIL, REVIEWER_EMAIL, RATING, COMMENT) values(?, ?, ?, ?)`);
-        await db.statementExecPromisified(statement, [review.reviewee_email, review.reviewer_email, review.rating, review.comment]);
-        return
-
+        try {
+            const statement = await db.preparePromisified(`INSERT INTO BB_REVIEWS (REVIEWEE_EMAIL, REVIEWER_EMAIL, RATING, COMMENT) values(?, ?, ?, ?)`);
+            await db.statementExecPromisified(statement, [review.reviewee_email, review.reviewer_email, review.rating, review.comment]);
+            return; 
+        } catch (error) {
+            console.log("Inside create error:" + JSON.stringify(error));
+            // queue this if db offline error and try again later.
+            db.insertReviewToQueue(review, `INSERT INTO BB_REVIEWS (REVIEWEE_EMAIL, REVIEWER_EMAIL, RATING, COMMENT) values(?, ?, ?, ?)`, db);
+            return;     
+        }
     }
 
     this.deleteAll = async function (req) {
