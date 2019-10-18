@@ -15,7 +15,7 @@ sap.ui.define([
 			this._initNewReviewModel();
 			this.setModel(this._oDetailsModel, "reviewDetails");
 		},
-		
+
 		onSampleFill : function () {
 			this._oDetailsModel.setData({
 			    reviewer_email: "john.doe@some.org",
@@ -23,7 +23,7 @@ sap.ui.define([
 			    comment: "Good product"
 			}, false);
 		},
-	
+
 		onSave : function() {
 			var reviewData = this._oDetailsModel.getData();
 			reviewData.reviewee_email = this.reviewee_email;
@@ -34,11 +34,11 @@ sap.ui.define([
 			this.reviewee_email = oEvent.getParameter("arguments").reviewee_email;
 			this.getView().byId("newReviewPage").setTitle("Create a new review for " + this.reviewee_email);
 		},
-		
+
 		onNavBack : function() {
 			this.getRouter().navTo("main", {'reviewee_email': this.reviewee_email}, true);
 		},
-		
+
 		_postReview : function(oNewReview, fSuccess) {
 			$.ajax({
 				method : "POST",
@@ -51,10 +51,10 @@ sap.ui.define([
 			.fail( function(oJqXHR, sTextStatus, sErrorThrown) {
 					MessageToast.show("Failed to create your new review.");
 					jQuery.sap.log.error("Failed to create new review.", sErrorThrown);
-	
+
 			});
 		},
-		
+
 		_initNewReviewModel : function () {
 			this._oDetailsModel.setData({}, false);
 		},
@@ -65,7 +65,7 @@ sap.ui.define([
 			// Reset model for new reviews so that the data of the created instance
 			// does not appear as initial data when creating another one.
 			this._initNewReviewModel();
-			
+
 			// Go back to list of ads.
 			this.getRouter().navTo("main", {'reviewee_email': oNewReview.reviewee_email});
 		}

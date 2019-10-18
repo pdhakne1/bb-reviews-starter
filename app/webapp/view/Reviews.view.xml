@@ -30,6 +30,6 @@
         <semantic:addAction>
             <semantic:AddAction press="onCreateReview"/>
         </semantic:addAction>
-        
+
 	</semantic:FullscreenPage>
 </mvc:View>
