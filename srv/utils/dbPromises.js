@@ -2,6 +2,8 @@
 /*eslint-env node, es6 */
 "use strict";
 
+const cache = new Map();
+
 module.exports = class {
 
 	static createConnectionFromEnv(envFile) {
@@ -83,17 +85,27 @@ module.exports = class {
 	}
 
 	preparePromisified(query) {
+		this.currentQuery = query;
 		return this.client.promisePrepare(query);
 	}
 
 	statementExecPromisified(statement, parameters) {
 		statement.promiseExec = this.util.promisify(statement.exec);
-		return statement.promiseExec(parameters);
+		return new Promise((resolve, reject) => {
+			statement.promiseExec(parameters).then((result) => {
+				cache.set(this.currentQuery + JSON.stringify(parameters), result);
+				resolve(result);
+			}, (error) => reject(error));
+		});
 	}
 
 	loadProcedurePromisified(hdbext, schema, procedure) {
 		hdbext.promiseLoadProcedure = this.util.promisify(hdbext.loadProcedure);
 		return hdbext.promiseLoadProcedure(this.client, schema, procedure);
+	}
+
+	getFromCache(query, params) {
+		return cache.get(query + JSON.stringify(params));
 	}
 
 	execSQL(sql) {
