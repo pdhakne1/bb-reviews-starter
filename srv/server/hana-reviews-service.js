@@ -1,31 +1,19 @@
 'use strict'
+
 function hanaReviewsService() {
     const dbClass = require("../utils/dbPromises");
     this.getAll = async function (req) {
-        let db = new dbClass(req.db);
-        try {
-            const statement = await db.preparePromisified(`SELECT REVIEWEE_EMAIL as "reviewee_email", REVIEWER_EMAIL as "reviewer_email", RATING as "rating", COMMENT as "comment" FROM BB_REVIEWS`);
-            const results = await db.statementExecPromisified(statement, []);
-            return results
-        } catch (error) {
-            return error;
-        }
-
+        return await this.get(req.db, `SELECT REVIEWEE_EMAIL as "reviewee_email", REVIEWER_EMAIL as "reviewer_email", RATING as "rating", COMMENT as "comment" FROM BB_REVIEWS`, []);
     }
 
     this.getAllFor = async function (revieweeEmail, req) {
-        let db = new dbClass(req.db);
-        const statement = await db.preparePromisified(`SELECT REVIEWEE_EMAIL as "reviewee_email", REVIEWER_EMAIL as "reviewer_email", RATING as "rating", COMMENT as "comment" FROM BB_REVIEWS WHERE REVIEWEE_EMAIL = ?`);
-        const results = await db.statementExecPromisified(statement, [revieweeEmail]);
-        return results
+        return await this.get(req.db, `SELECT REVIEWEE_EMAIL as "reviewee_email", REVIEWER_EMAIL as "reviewer_email", RATING as "rating", COMMENT as "comment" FROM BB_REVIEWS WHERE REVIEWEE_EMAIL = ?`, [revieweeEmail]);
     }
 
 
     this.getAverageRating = async function (revieweeEmail, req) {
-        let db = new dbClass(req.db);
-        const statement = await db.preparePromisified(`SELECT  avg(RATING) as "average_rating" FROM BB_REVIEWS WHERE REVIEWEE_EMAIL = ?`);
-        const results = await db.statementExecPromisified(statement, [revieweeEmail]);
-        return results[0]
+        const results = await this.get(req.db, `SELECT  avg(RATING) as "average_rating" FROM BB_REVIEWS WHERE REVIEWEE_EMAIL = ?`, [revieweeEmail]);
+        return results[0];
     }
 
     async function sleep(req) {
@@ -52,6 +40,20 @@ function hanaReviewsService() {
         await db.statementExecPromisified(statement, []);
         return
 
+    }
+
+    this.get = async function (db, query, params) {
+        let dbObject = new dbClass(db);
+        try {
+            const statement = await dbObject.preparePromisified(query);
+            return await dbObject.statementExecPromisified(statement, params);
+        } catch (error) {
+            const cachedResult = dbObject.getFromCache(query, params);
+            if (cachedResult) {
+                return cachedResult;
+            }
+            throw error;
+        }
     }
 }
 module.exports = hanaReviewsService
