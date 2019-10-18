@@ -5,7 +5,16 @@ const HTTP_CONFLICT = 409
 const HTTP_INTERNAL_ERROR = 500
 
 module.exports = function(app) {
-
+	// START of Rate limiter
+	var sleepLimiter = require('../utils/sleepLimiter.js');
+	sleepLimiter(app);
+	
+	var reviewSlowdown  = require('../utils/reviewSlowdown.js');
+	reviewSlowdown(app);
+	
+	var maxRequestLimiter  = require('../utils/maxRequestLimiter.js');
+	maxRequestLimiter(app);
+	
 	app.get('/api/v1/reviews', async function readAll(req, res) {
 		try {
 			const result = await app.reviewsService.getAll(req)
