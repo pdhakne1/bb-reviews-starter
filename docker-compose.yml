@@ -1,9 +1,11 @@
 version: '3'
 services:
   web:
-    image: "shawnw/bb-reviewer-web"
+    image: "petertan/bb-reviewer"
     ports:
       - "4004:4004"
+    volumes:
+      - ${PWD}/default-env.json:/data/default-env.json
   srv:
     image: "deadbacon/bb-starter"
     ports:
