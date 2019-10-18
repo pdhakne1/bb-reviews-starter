@@ -4,6 +4,8 @@ services:
     image: "shawnw/bb-reviewer-web"
     ports:
       - "4004:4004"
+    volumes:
+      - ${PWD}/default-env.json:/data/default-env.json
   srv:
     image: "deadbacon/bb-starter"
     ports:
