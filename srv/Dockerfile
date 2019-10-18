@@ -17,6 +17,8 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+#Define the network port that the container will listen to
 EXPOSE 4000
+
 
 CMD [ "npm", "start" ]
