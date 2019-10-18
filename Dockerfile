@@ -9,8 +9,8 @@ EXPOSE 4004
 # --- Sync db changes
 WORKDIR /usr/src/app/db
 RUN npm config set @sap:registry https://npm.sap.com
-RUN npm install --verbose --prefix /usr/src/app/db
-RUN npm install --verbose --prefix /usr/src/app
+RUN npm install --prefix /usr/src/app/db
+RUN npm install --prefix /usr/src/app
 
 # 1. Apply default-env.json from mount point to root, /db and /srv folders
 # 2. Sync db changes
