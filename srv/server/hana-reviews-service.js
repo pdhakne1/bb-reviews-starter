@@ -9,8 +9,23 @@ const circuitBreakerOptions = {
 function hanaReviewsService() {
     const dbClass = require("../utils/dbPromises");
 
+    var breakers = {};
+
     async function breaker(func, ...args) {
-        const breaker = new CircuitBreaker(func, circuitBreakerOptions);
+        var breaker = breakers[func];
+        if (!breaker) {
+            var breaker = new CircuitBreaker(func, circuitBreakerOptions);
+            breaker.fallback(() => { return "Sorry the DB is down. Please retry later." });
+
+            breakers[func] = breaker;
+            breaker.on('success', () => console.log("success"));
+            breaker.on('timeout', () => console.log("timeout"));
+            breaker.on('reject', () => console.log("reject"));
+            breaker.on('open', () => console.log("open"));  
+            breaker.on('halfOpen', () => console.log("halfOpen"));
+            breaker.on('close', () => console.log("close"));
+        }
+
         var result = await breaker.fire(...args);
         return result;
     }
