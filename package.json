@@ -11,6 +11,8 @@
         "node": "^10.15"
     },
     "dependencies": {
+        "mocha": "^6.2.2",
+        "chai": "^4.2.0",
         "@sap/cds": "^3.16",
         "express": "^4.17.1",
         "hdb": "^0.17.1"
@@ -18,7 +20,8 @@
     "scripts": {
         "build": "cds build/all --clean",
         "deploy": "cds deploy",
-        "start": "cds run"
+        "start": "cds run",
+        "test": "mocha"
     },
     "files": [
         "srv",
