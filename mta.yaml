@@ -2,7 +2,7 @@ _schema-version: 2.0.0
 ID: bb-reviews-starter
 version: 1.0.0
 modules:
-  - name: bb-reviews-starter-srv
+  - name: pvd-bb-reviews-starter-srv
     type: nodejs
     path: srv
     parameters:
