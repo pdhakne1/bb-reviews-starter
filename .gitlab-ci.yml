@@ -14,6 +14,7 @@ test:
     paths:
       - bin/
   script:
+  - npm i
   - npm test
 
 deploy:
