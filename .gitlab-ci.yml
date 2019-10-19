@@ -21,7 +21,7 @@ deploy:
   image: pivotalpa/cf-cli-resource
   stage: deploy
   script:
-  - cf login -a "https://api.cf.eu10.hana.ondemand.com" -u "pallavi.dhakne@sap.com" -p "Mangesh&1982" -o "SAP Academy for Engineering_team5" -s "Dev"
+  - cf login -a "https://api.cf.eu10.hana.ondemand.com"
   - cf push -f mta.yaml bb-reviews-starter-db --no-start
   - cf bs bb-reviews-starter-db bb-reviews-starter-db-hdi-container
   - cf start bb-reviews-starter-db
