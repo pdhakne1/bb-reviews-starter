@@ -6,5 +6,6 @@ it('Dummy test for integration', function() {
 });
 
 it('Other test for pipeline', function() {
+    //test for okay.
     assert.ok(true);
 });
